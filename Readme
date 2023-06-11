@@ -1,0 +1,61 @@
+##Emma Tran and Navya Mangipudi
+
+##Our repository can be found here: https://gitlab.cs.washington.edu/cse374-23sp-students/cse374-23sp-HW6-emma4013-vyamang
+
+##Work Division:
+Navya: mem_utils.c, Makefile, getmem
+Emma: readme, freemem, getmem
+
+##Free List
+The heap (free list) data structure is organized as a linked list of free memory blocks. Each block is represented by a freeNode structure, which contains the size of the block and a pointer to the next free block.
+The main algorithms used to manage the free list are...
+
+Allocation and Deallocation:
+When memory is requested (getmem()), the code searches through the free list to find a block that can satisfy the requested size.
+If a suitable block is found, it is allocated to the user. If the block is larger than the requested size, it may be split into two parts: one part is allocated to the user, and the other part is added back to the free list. If no suitable block is found, a new block is allocated from the system using malloc() and added to the total allocated memory count.
+When memory is freed, the corresponding block is added back to the free list using the insertBlock() function. The function inserts the block into the free list in the correct position based on the addresses of the blocks. If possible, adjacent free blocks are merged into a single larger block using the makeBlock() function.
+
+Checking:
+The check_heap() function is used to validate the integrity of the heap. It iterates through the free list, checking various conditions such as block sizes, block addresses, and overlapping blocks. If any corruption is detected, an assertion error is raised.
+
+Statistics:
+The get_mem_stats() function calculates and returns statistics about the heap. It iterates through the free list to calculate the total amount of free memory, the total size of allocated memory, and the number of free blocks.
+
+Printing:
+The print_heap() function prints information about each block in the free list. It iterates through the free list, printing the address, size, and the address of the next block for each node. This ensures efficient allocation and deallocation of memory by managing and organizing the free list effectively.
+
+##Additional Features and Improvements
+
+Memory Alignment:
+The getmem() function aligns the requested size to the nearest multiple of 16. This alignment ensures that the allocated memory blocks are properly aligned for efficient memory access.
+
+Chunking Optimization:
+If the requested size is larger than a predefined threshold (BIGCHUNK), the allocated block size is set to the exact requested size. This optimization avoids allocating larger blocks than necessary for large requests, reducing memory waste.
+
+Splitting Optimization:
+The getmem() function checks if a free block is large enough to be split into two parts. If a block is larger than the requested size plus the minimum chunk size (MINCHUNK), it is split into two parts. This optimization allows better utilization of memory by avoiding excessive fragmentation and maximizing the use of available space.
+
+Efficient Memory Deallocation:
+The freemem() function inserts freed blocks into the free list in the appropriate position based on the block addresses. This ensures that the free list remains organized and facilitates efficient merging of adjacent free blocks.
+
+Additional Heap Checking:
+The check_heap() function is called before and after memory allocation and deallocation to ensure the integrity of the heap. It verifies various conditions, such as block sizes, block addresses, and overlapping blocks, to detect any corruption in the heap.
+
+##Results through Testing
+
+Part A: CPU TIME is roughly .005 seconds when running 10000 trials. The amount of bytes used from the underlying system is generally around 38000 bytes for every run.
+
+Part B: The elapsed time for each run is 0 milliseconds, which exemplifies that the allocation and deallocation operations are very fast. The total storage used varies in each run, but it is generally around 38,000 bytes. 
+
+In the first set of runs with 15 trials and 100% getmem calls, the total storage values range from 8,544 bytes to 130,960 bytes. Although there is variation, the values do not exceed the 38,000-byte threshold significantly.
+In the second set of runs with 100 trials and 50% getmem calls, the total storage values range from 8,816 bytes to 407,248 bytes. Again, the values generally stay within the range mentioneded.
+In the third set of runs with 100 trials and 0% getmem calls, the total storage values range from 23,824 bytes to 358,896 bytes. Once again, the values remain within the expected range.
+
+As for the number of free blocks reported in each run, the output indicates that the system is behaving consistently with the expected behavior of the memory management system. The specific values are provided for each run, indicating the number of free blocks remaining after the allocation and deallocation operations.
+
+Comparing part A and B, part B seems more efficient and effective than part A due to its faster and better results in the case of memory management.
+
+##Resources
+We used some basic resources online (found with simple google searches) below to complete our code as well as class slides/ lecture information.
+https://stackoverflow.com/questions/24891/c-memory-management
+https://www.tutorialspoint.com/cprogramming/c_memory_management.htm
